@@ -1,9 +1,14 @@
 # Pump Curve Modeling with GPR
 
 ## 프로젝트 소개
-이 프로젝트는 **Pump의 유량(Flowrate)**과 **제어 변수(Stroke)**를 기반으로  
-**Head, Power, Efficiency 곡면**을 학습하고, 시스템 곡선과의 교점을 찾아  
-**효율 최적 후보점**을 도출하는 작업을 수행했습니다.  
+이 프로젝트는 펌프의 운전 데이터를 기반으로  
+Gaussian Process Regression (GPR)을 활용하여  
+Head, Power, Efficiency 특성 곡면을 모델링합니다.  
+
+시스템 곡선(System Curve)과의 교점을 계산하여  
+펌프가 실제 시스템에서 운전 가능한 지점을 도출했고,  
+효율 최적화 탐색을 하여  
+학습된 곡면 전체를 대상으로 효율이 높은 Top N 후보점을 계산했습니다.
 
 ---
 
