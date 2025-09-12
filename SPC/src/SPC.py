@@ -1,13 +1,13 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 import os
 import glob
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
 from itertools import combinations
 
 plt.rcParams['font.family'] = 'Times New Roman'
-
 pd.set_option('display.max_columns', None)
 
 base_path = "C:/data/EEMS"
@@ -40,7 +40,6 @@ def process_csv_to_parquet():
 
         df.to_parquet(parquet_path, engine='pyarrow')
         print(f"[Unfiltered] Saved: {parquet_path}")
-# process_csv_to_parquet()
 
 
 def process_and_save_filtered_parquet():
@@ -67,7 +66,6 @@ def process_and_save_filtered_parquet():
 
         df.to_parquet(new_path, engine='pyarrow')
         print(f"[Filtered] Saved: {new_path}")
-# process_and_save_filtered_parquet()
 
 
 def combine_and_split_by_machine():
@@ -89,7 +87,6 @@ def combine_and_split_by_machine():
         save_path = os.path.join(data_path, f"SPC-filtered-decomposed-{machine_id}.parquet")
         df_machine.to_parquet(save_path, engine='pyarrow', index=False)
         print(f"Saved {save_path} with {len(df_machine)} rows")
-# combine_and_split_by_machine()
 
 
 def compute_cumulative_energy_per_machine():
@@ -109,7 +106,6 @@ def compute_cumulative_energy_per_machine():
         df = df.drop(columns=['time_diff_hr', 'avg_active_power', 'interval_energy_wh'])
         df.to_parquet(file_path, engine='pyarrow', index=False)
         print(f" 누적 에너지 계산 완료 및 저장: {file_path} ({len(df)} rows)")
-# compute_cumulative_energy_per_machine()
 
 
 def split_chunk_into_24h_subchunks_aligned(chunk_df, ref_time):
@@ -188,7 +184,6 @@ def split_and_save_24h_chunks():
             print(f"   └─ Chunk {i + 1}: {start} → {end} (duration: {end - start}, rows: {len(chunk)})")
 
     return results
-# split_and_save_24h_chunks()
 
 
 def filter_chunks_with_diff_threshold():
@@ -229,7 +224,6 @@ def filter_chunks_with_diff_threshold():
             print(f"   └─ Chunk {i+1}: {start} → {end} (rows: {len(chunk)}, max_shifted: {max_shifted:.2f})")
 
     return final_results
-# filter_chunks_with_diff_threshold()
 
 
 def compare_chunk_slope_first_last():
@@ -272,7 +266,6 @@ def compare_chunk_slope_first_last():
         print(f"   • Chunk [-1] 전체 변화량:    {dy_last:.2f} kW")
         print(f"   • Chunk [-1] 전체 변화율:    {rate_last:.4f} kW/시간")
         print(f"   • Chunk [-1] 0 제외 변화율:  {slope_last:.4f} kW/시간")
-# compare_chunk_slope_first_last()
 
 
 def split_chunk_by_flat_intervals(chunk, max_flat_hold_hours=0.1):
@@ -353,7 +346,6 @@ def print_subchunk_slopes_by_flat_hold(max_flat_hold_hours=0.1):
 
             weighted_avg_slope = total_delta_y / total_delta_t
             print(f"\n    서브청크 {count_valid}개 → 가중 평균 변화율 = {weighted_avg_slope:.2f} kW/h")
-# print_subchunk_slopes_by_flat_hold()
 
 
 def compute_min_rate_for_interval(d_start, d_end, chunks_by_machine):
@@ -434,4 +426,22 @@ def find_max_of_min_rate_interval(min_overlap_days=1):
     else:
         print("# 유효 구간 없음 #")
         return None
-# find_max_of_min_rate_interval()
+
+
+def main():
+    """
+    전체 실행 흐름 제어
+    """
+    process_csv_to_parquet()
+    process_and_save_filtered_parquet()
+    combine_and_split_by_machine()
+    compute_cumulative_energy_per_machine()
+    split_and_save_24h_chunks()
+
+    filter_chunks_with_diff_threshold()
+    compare_chunk_slope_first_last()
+    print_subchunk_slopes_by_flat_hold()
+    find_max_of_min_rate_interval()
+
+if __name__ == "__main__":
+    main()
