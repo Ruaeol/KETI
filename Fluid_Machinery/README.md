@@ -14,7 +14,7 @@ Head, Power, Efficiency 특성 곡면을 모델링합니다.
 
 ## 관련 자료
 - [Pump PPT 보기](docs/pump_PPT.pdf)
- **설명:** 총 17페이지, Pump Class 데이터 분석 내용 보고
+- **설명:** 총 17페이지, Pump Class 데이터 분석 내용 보고
 
 ---
 
