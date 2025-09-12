@@ -12,9 +12,14 @@ Head, Power, Efficiency 특성 곡면을 모델링합니다.
 
 ---
 
+## 관련 자료
+- [Pump PPT 보기](docs/pump_PPT.pdf)
+
 ## 데이터 안내
 - 실제 데이터는 회사 소유로 포함되지 않음  
-- 아래는 데이터 구조 예시  
+- 아래는 데이터 구조 예시
+
+---
 
 ### Pump 데이터 (`<machine_name>_data.csv`)
 | Flowrate | dP   | Head | Power | Efficiency | Stroke |
